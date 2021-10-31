@@ -32,35 +32,35 @@ public class BoardGenerator : MonoBehaviour
     public GameObject BlackKing;
     public GameObject BlackQueen;
 
-    void GenerateField(int y, int row, int column, int x)
+    void GenerateSquare(int y, int row, int column, int x)
     {
-            if (row % 2 == 1)
+        if (row % 2 == 1)
+        {
+            if (column % 2 == 1)
             {
-                if (column % 2 == 1)
-                {
-                    instances.field[row, column] = Instantiate(WhiteSquare);
-                }
-                else if (column % 2 == 0)
-                {
-                    instances.field[row, column] = Instantiate(PinkSquare);
-                }
+                instances.field[row, column] = Instantiate(WhiteSquare);
             }
-            else if (row % 2 == 0)
+            else if (column % 2 == 0)
             {
-                if (column % 2 == 0)
-                {
-                    instances.field[row, column] = Instantiate(WhiteSquare);
-                }
-                else if (column % 2 == 1)
-                {
-                    instances.field[row, column] = Instantiate(PinkSquare);
-                }
+                instances.field[row, column] = Instantiate(PinkSquare);
             }
-            instances.field[row, column].transform.position = new Vector3(x, y, 0);
-            instances.field[row, column].name = "Field " + letters[column] + " " + (8 - row);
-            instances.field[row, column].transform.SetParent(Field.transform);
-            instances.field[row, column].GetComponent<FieldInfo>().positionX = column;
-            instances.field[row, column].GetComponent<FieldInfo>().positionY = row;
+        }
+        else if (row % 2 == 0)
+        {
+            if (column % 2 == 0)
+            {
+                instances.field[row, column] = Instantiate(WhiteSquare);
+            }
+            else if (column % 2 == 1)
+            {
+                instances.field[row, column] = Instantiate(PinkSquare);
+            }
+        }
+        instances.field[row, column].transform.position = new Vector3(x, y, 0);
+        instances.field[row, column].name = "Field " + lettersTop[column].text.ToString() + " " + System.Int32.Parse(numbersRight[row].text);
+        instances.field[row, column].transform.SetParent(Field.transform);
+        instances.field[row, column].GetComponent<FieldInfo>().positionX = lettersTop[column].text.ToString();
+        instances.field[row, column].GetComponent<FieldInfo>().positionY = System.Int32.Parse(numbersRight[row].text);
     }
     void GenerateText()
     {
@@ -92,6 +92,7 @@ public class BoardGenerator : MonoBehaviour
     }
     void GenerateField()
     {
+        GenerateText();
         if (WhiteFiguresCloserToPlayer == true)
         {
             int y = -7;
@@ -100,7 +101,7 @@ public class BoardGenerator : MonoBehaviour
                 int x = -7;
                 for (int column = 0; column < 8; column++)
                 {
-                    GenerateField(y, row, column, x);
+                    GenerateSquare(y, row, column, x);
                     x += 2;
                 }
                 y += 2;
@@ -108,58 +109,92 @@ public class BoardGenerator : MonoBehaviour
         }
         else
         {
-            int y = -7;
+            int y = 7;
             for (int row = 0; row < 8; row++)
             {
-                int x = -7;
+                int x = 7;
                 for (int column = 7; column >= 0; column--)
                 {
-                    GenerateField(y, row, column, x);
-                    x += 2;
+                    GenerateSquare(y, row, column, x);
+                    x -= 2;
                 }
-                y += 2;
+                y -= 2;
             }
         }
-        GenerateText();
     }
-    void PlaceFigure(GameObject figure, int positionX, int positionY)
+    void PlaceFigure(GameObject figure, int positionX, int positionY, string type, string color)
     {
         GameObject figureToPlace = Instantiate(figure);
         figureToPlace.transform.position = new Vector3(instances.field[positionX, positionY].transform.position.x,
                                               instances.field[positionX, positionY].transform.position.y, -1);
         figureToPlace.transform.SetParent(Figures.transform);
         figureToPlace.name = figure.name + " " + letters[positionX] + " " + positionY;
+        figureToPlace.GetComponent<FigureInfo>().field = instances.field[positionX, positionY];
+        figureToPlace.GetComponent<FigureInfo>().type = type;
+        figureToPlace.GetComponent<FigureInfo>().color = color;
+        figureToPlace.GetComponent<FigureInfo>().fieldRow = positionX;
+        figureToPlace.GetComponent<FigureInfo>().fieldColumn = positionY;
         instances.field[positionX, positionY].GetComponent<FieldInfo>().figure = figureToPlace;
+
     }
     void PlacePawns()
     {
         for (int column = 0; column < 8; column++)
         {
-            PlaceFigure(WhitePawn, 6, column);
-            PlaceFigure(BlackPawn, 1, column);
+            int blackX, whiteX;
+            if (WhiteFiguresCloserToPlayer)
+            {
+                blackX = 1;
+                whiteX = 6;
+            }
+            else
+            {
+                blackX = 6;
+                whiteX = 1;
+            }
+            PlaceFigure(WhitePawn, whiteX, column, "pawn", "white");
+            PlaceFigure(BlackPawn, blackX, column, "pawn", "black");
         }
     }
     void PlaceWhiteFigures()
     {
-        PlaceFigure(WhiteRook, 7, 0);
-        PlaceFigure(WhiteKnight, 7, 1);
-        PlaceFigure(WhiteBishop, 7, 2);
-        PlaceFigure(WhiteKing, 7, 3);
-        PlaceFigure(WhiteQueen, 7, 4);
-        PlaceFigure(WhiteBishop, 7, 5);
-        PlaceFigure(WhiteKnight, 7, 6);
-        PlaceFigure(WhiteRook, 7, 7);
+        int whiteX;
+        if (WhiteFiguresCloserToPlayer)
+        {
+            whiteX = 7;
+        }
+        else
+        {
+            whiteX = 0;
+        }
+        PlaceFigure(WhiteRook, whiteX, 0, "rook", "white");
+        PlaceFigure(WhiteKnight, whiteX, 1, "knight", "white");
+        PlaceFigure(WhiteBishop, whiteX, 2, "bishop", "white");
+        PlaceFigure(WhiteKing, whiteX, 3, "king", "white");
+        PlaceFigure(WhiteQueen, whiteX, 4, "queen", "white");
+        PlaceFigure(WhiteBishop, whiteX, 5, "bishop", "white");
+        PlaceFigure(WhiteKnight, whiteX, 6, "knight", "white");
+        PlaceFigure(WhiteRook, whiteX, 7, "rook", "white");
     }
     void PlaceBlackFigures()
     {
-        PlaceFigure(BlackRook, 0, 0);
-        PlaceFigure(BlackKnight, 0, 1);
-        PlaceFigure(BlackBishop, 0, 2);
-        PlaceFigure(BlackKing, 0, 3);
-        PlaceFigure(BlackQueen, 0, 4);
-        PlaceFigure(BlackBishop, 0, 5);
-        PlaceFigure(BlackKnight, 0, 6);
-        PlaceFigure(BlackRook, 0, 7);
+        int blackX;
+        if (WhiteFiguresCloserToPlayer)
+        {
+            blackX = 0;
+        }
+        else
+        {
+            blackX = 7;
+        }
+        PlaceFigure(BlackRook, blackX, 0, "rook", "black");
+        PlaceFigure(BlackKnight, blackX, 1, "knight", "black");
+        PlaceFigure(BlackBishop, blackX, 2, "bishop", "black");
+        PlaceFigure(BlackKing, blackX, 3, "king", "black");
+        PlaceFigure(BlackQueen, blackX, 4, "queen", "black");
+        PlaceFigure(BlackBishop, blackX, 5, "bishop", "black");
+        PlaceFigure(BlackKnight, blackX, 6, "knight", "black");
+        PlaceFigure(BlackRook, blackX, 7, "rook", "black");
     }
     void PlaceFigures()
     {

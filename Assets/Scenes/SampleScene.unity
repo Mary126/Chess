@@ -1366,7 +1366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc69e160c002b8a40bf81dfe381cb6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WhiteFiguresCloserToPlayer: 1
+  WhiteFiguresCloserToPlayer: 0
   WhiteSquare: {fileID: 6344723255570958288, guid: d0e15a7e9b00eb140961a0cc1f8a0348, type: 3}
   PinkSquare: {fileID: 418819111920373699, guid: 5a51cb6b1e01bec4b8762d9ec1d988ee, type: 3}
   Field: {fileID: 1442491551}

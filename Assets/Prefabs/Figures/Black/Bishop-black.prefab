@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7752258512618674178}
   - component: {fileID: 3470493563781481100}
+  - component: {fileID: -8343746129869392087}
   m_Layer: 0
   m_Name: Bishop-black
   m_TagString: Untagged
@@ -82,3 +83,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-8343746129869392087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481577394011013404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18357c302807360479b88a28a0043800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

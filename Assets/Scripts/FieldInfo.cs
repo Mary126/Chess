@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FieldInfo : MonoBehaviour
 {
-    public int positionX = 0;
-    public int positionY = 0;
+    public string positionX;
+    public int positionY;
     public GameObject figure;
 }
