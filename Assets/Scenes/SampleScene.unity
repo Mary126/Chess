@@ -1434,6 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 730564ae2069f8749b54bbcab49f4583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playlablePosition: bottom
 --- !u!4 &635487433
 Transform:
   m_ObjectHideFlags: 0
@@ -1460,6 +1461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dda37c761fea1ac41a66df054267b5b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instances: {fileID: 0}
   controlledFigure: {fileID: 0}
 --- !u!114 &635487435
 MonoBehaviour:

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private Instances instances;
+    public Instances instances;
     public GameObject controlledFigure;
-    GameObject ReturnFigureOnSquare(GameObject field)
+    private GameRules gameRules;
+    public GameObject ReturnFigureOnSquare(GameObject field)
     {
         if (field.GetComponent<FieldInfo>().figureOnSquare != null)
         {
@@ -14,39 +15,26 @@ public class GameManager : MonoBehaviour
         }
         else return null;
     }
-    GameObject ReturnFieldUnderFigure(GameObject figure)
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(figure.transform.position, transform.TransformDirection(Vector3.forward), out hit, 10f))
-        {
-            return hit.collider.gameObject;
-        }
-        else return null;
-    }
     void EatFigure(GameObject figure)
     {
         Destroy(figure);
     }
-    public bool CheckColor(GameObject figure1, GameObject figure2)
+    public void OpenOccupiedField(GameObject figure1, GameObject field)
     {
-        if (figure2 != null && (figure1.GetComponent<FigureInfo>().color != figure2.GetComponent<FigureInfo>().color))
+        GameObject figure2 = ReturnFigureOnSquare(field);
+        if (figure2 != null && figure1.GetComponent<FigureInfo>().color != figure2.GetComponent<FigureInfo>().color)
         {
+            field.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 0xFF);
             figure2.GetComponent<BoxCollider>().enabled = false;
-            return true;
+            field.GetComponent<FieldInfo>().isactive = true;
         }
-        else return false;
     }
-    void OpenField(GameObject figure1, GameObject field)
+    public void OpenFreeField(GameObject figure1, GameObject field)
     {
         GameObject figure2 = ReturnFigureOnSquare(field);
         if (figure2 == null)
         {
             field.GetComponent<SpriteRenderer>().color = new Color32(0, 128, 0, 0xFF);
-            field.GetComponent<FieldInfo>().isactive = true;
-        }
-        else if (CheckColor(figure1, figure2))
-        {
-            field.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 0xFF);
             field.GetComponent<FieldInfo>().isactive = true;
         }
     }
@@ -60,6 +48,7 @@ public class GameManager : MonoBehaviour
                 if (instances.field[row, column].GetComponent<FieldInfo>().isactive)
                 {
                     GameObject figure = ReturnFigureOnSquare(instances.field[row, column]);
+                    //enable all the colliders
                     if (figure != null)
                     {
                         figure.GetComponent<BoxCollider>().enabled = true;
@@ -79,44 +68,56 @@ public class GameManager : MonoBehaviour
         if (controlledFigure != null)
         {
             controlledFigure.GetComponent<FigureInfo>().isControlled = false;
-        }
-    }
-    public void PawnMovement(FigureInfo figureInfo)
-    {
-        int row = figureInfo.fieldRow;
-        int column = figureInfo.fieldColumn;
-        if (row - 1 >= 0)
-        {
-            OpenField(figureInfo.gameObject, figureInfo.instances.field[row - 1, column]);
-        }
-        if (row - 2 >= 0)
-        {
-            OpenField(figureInfo.gameObject, figureInfo.instances.field[row - 2, column]);
+            controlledFigure = null;
         }
     }
     public void OpenAvailableFields(FigureInfo figureInfo)
     {
-        PawnMovement(figureInfo);
+        gameRules.PawnMovement(figureInfo);
     }
-    public void SetControlledFigure(GameObject figure)
+    public void ChangeTurns()
     {
-        controlledFigure = figure;
+        if (instances.playlablePosition == "top")
+        {
+            instances.playlablePosition = "bottom";
+        }
+        else if (instances.playlablePosition == "bottom")
+        {
+            instances.playlablePosition = "top";
+        }
+        else Debug.LogError("Error - playablePosition name is wrong");
+        for (int row = 0; row < 8; row++)
+        {
+            for (int column = 0; column < 8; column++)
+            {
+                GameObject figure = ReturnFigureOnSquare(instances.field[row, column]);
+                if (figure != null) {
+                    figure.GetComponent<FigureInfo>().isPlaylable = !figure.GetComponent<FigureInfo>().isPlaylable;
+                }
+            }
+        }
     }
     public void MoveControlledFigure(Transform newTransform, int fieldPositionRow, int fieldPositionColumn)
     {
         if (controlledFigure != null)
         {
             GameObject figure = ReturnFigureOnSquare(instances.field[fieldPositionRow, fieldPositionColumn]);
-            instances.field[fieldPositionRow, fieldPositionColumn].GetComponent<FieldInfo>().figureOnSquare = newTransform.gameObject;
+            instances.field[fieldPositionRow, fieldPositionColumn].GetComponent<FieldInfo>().figureOnSquare = 
+                controlledFigure;
             if (figure != null)
             {
                 EatFigure(figure);
             }
+            instances.field[controlledFigure.GetComponent<FigureInfo>().fieldRow,
+                controlledFigure.GetComponent<FigureInfo>().fieldColumn].GetComponent<FieldInfo>().figureOnSquare = null;
             controlledFigure.GetComponent<FigureControll>().MoveFigure(newTransform, fieldPositionRow, fieldPositionColumn);
+            DisableControlledFigure();
+            ChangeTurns();
         }
     }
     void Awake()
     {
         instances = GetComponent<Instances>();
+        gameRules = GetComponent<GameRules>();
     }
 }

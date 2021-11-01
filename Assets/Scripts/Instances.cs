@@ -5,6 +5,7 @@ using UnityEngine;
 public class Instances : MonoBehaviour
 {
     [System.NonSerialized] public GameObject[,] field;
+    public string playlablePosition = "bottom";
     // Start is called before the first frame update
     void Awake()
     {

@@ -132,22 +132,18 @@ public class BoardGenerator : MonoBehaviour
         figureToPlace.transform.position = new Vector3(instances.field[positionX, positionY].transform.position.x,
                                               instances.field[positionX, positionY].transform.position.y, -1);
         figureToPlace.transform.SetParent(Figures.transform);
-        figureToPlace.name = figure.name + " " + letters[positionX] + " " + positionY;
+        figureToPlace.name = figure.name + " " + lettersTop[positionX] + " " + numbersLeft[positionY];
         figureToPlace.GetComponent<FigureInfo>().type = type;
         figureToPlace.GetComponent<FigureInfo>().color = color;
         figureToPlace.GetComponent<FigureInfo>().fieldRow = positionX;
         figureToPlace.GetComponent<FigureInfo>().fieldColumn = positionY;
         figureToPlace.GetComponent<FigureInfo>().instances = instances;
         figureToPlace.GetComponent<FigureInfo>().gameManager = gameManager;
-        if (color == "white" && WhiteFiguresCloserToPlayer)
+        if (color == "white")
         {
             figureToPlace.GetComponent<FigureInfo>().isPlaylable = true;
         }
-        else if (color == "black" && !WhiteFiguresCloserToPlayer)
-        {
-            figureToPlace.GetComponent<FigureInfo>().isPlaylable = true;
-        }
-        else
+        else if (color == "black")
         {
             figureToPlace.GetComponent<FigureInfo>().isPlaylable = false;
         }
@@ -215,6 +211,14 @@ public class BoardGenerator : MonoBehaviour
     }
     void PlaceFigures()
     {
+        if (WhiteFiguresCloserToPlayer)
+        {
+            instances.playlablePosition = "bottom";
+        }
+        else if (!WhiteFiguresCloserToPlayer)
+        {
+            instances.playlablePosition = "top";
+        }
         PlacePawns();
         PlaceWhiteFigures();
         PlaceBlackFigures();
