@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 252639381428825668}
   - component: {fileID: 6358426973161469130}
   - component: {fileID: -3490499584557370515}
+  - component: {fileID: 1397404835822109539}
+  - component: {fileID: -3167392386831983847}
   m_Layer: 0
   m_Name: Queen-white
   m_TagString: Untagged
@@ -95,3 +97,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18357c302807360479b88a28a0043800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instances: {fileID: 0}
+  isPlaylable: 0
+  field: {fileID: 0}
+  fieldColumn: 0
+  fieldRow: 0
+  type: null
+  color: null
+  gameManager: {fileID: 0}
+--- !u!114 &1397404835822109539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978944983033329498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2087c65f485e21b4e8ae137708edfeaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &-3167392386831983847
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7978944983033329498}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.28, y: 1.28, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

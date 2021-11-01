@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3309142086803027227}
   - component: {fileID: 4387100696327050653}
   - component: {fileID: 3982612568429305888}
+  - component: {fileID: 5344755173440050495}
+  - component: {fileID: 7478715547039973414}
   m_Layer: 0
   m_Name: White square
   m_TagString: Untagged
@@ -93,5 +95,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ff4ac3f647d1934093ba9841d97f752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionX: 
+  positionY: 0
+  isactive: 0
+  color: white
+--- !u!65 &5344755173440050495
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6344723255570958288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7478715547039973414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6344723255570958288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b28911b49b3dd441ac3fcf7e5accbb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

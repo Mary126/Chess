@@ -11,6 +11,7 @@ public class BoardGenerator : MonoBehaviour
     private Instances instances;
     public GameObject Field;
     public GameObject Figures;
+    public GameManager gameManager;
     [System.NonSerialized] public char[] letters;
     [Header("Text")]
     public List<Text> lettersBottom;
@@ -57,10 +58,13 @@ public class BoardGenerator : MonoBehaviour
             }
         }
         instances.field[row, column].transform.position = new Vector3(x, y, 0);
-        instances.field[row, column].name = "Field " + lettersTop[column].text.ToString() + " " + System.Int32.Parse(numbersRight[row].text);
+        instances.field[row, column].name = lettersTop[column].text.ToString() + " " +
+            System.Int32.Parse(numbersRight[row].text);
         instances.field[row, column].transform.SetParent(Field.transform);
-        instances.field[row, column].GetComponent<FieldInfo>().positionX = lettersTop[column].text.ToString();
-        instances.field[row, column].GetComponent<FieldInfo>().positionY = System.Int32.Parse(numbersRight[row].text);
+        instances.field[row, column].GetComponent<FieldInfo>().positionRow = row;
+        instances.field[row, column].GetComponent<FieldInfo>().positionColumn = column;
+        instances.field[row, column].GetComponent<FieldInfo>().isactive = false;
+        instances.field[row, column].GetComponent<FieldInfo>().gameManager = gameManager;
     }
     void GenerateText()
     {
@@ -129,13 +133,26 @@ public class BoardGenerator : MonoBehaviour
                                               instances.field[positionX, positionY].transform.position.y, -1);
         figureToPlace.transform.SetParent(Figures.transform);
         figureToPlace.name = figure.name + " " + letters[positionX] + " " + positionY;
-        figureToPlace.GetComponent<FigureInfo>().field = instances.field[positionX, positionY];
         figureToPlace.GetComponent<FigureInfo>().type = type;
         figureToPlace.GetComponent<FigureInfo>().color = color;
         figureToPlace.GetComponent<FigureInfo>().fieldRow = positionX;
         figureToPlace.GetComponent<FigureInfo>().fieldColumn = positionY;
-        instances.field[positionX, positionY].GetComponent<FieldInfo>().figure = figureToPlace;
-
+        figureToPlace.GetComponent<FigureInfo>().instances = instances;
+        figureToPlace.GetComponent<FigureInfo>().gameManager = gameManager;
+        if (color == "white" && WhiteFiguresCloserToPlayer)
+        {
+            figureToPlace.GetComponent<FigureInfo>().isPlaylable = true;
+        }
+        else if (color == "black" && !WhiteFiguresCloserToPlayer)
+        {
+            figureToPlace.GetComponent<FigureInfo>().isPlaylable = true;
+        }
+        else
+        {
+            figureToPlace.GetComponent<FigureInfo>().isPlaylable = false;
+        }
+        figureToPlace.GetComponent<FigureInfo>().isControlled = false;
+        instances.field[positionX, positionY].GetComponent<FieldInfo>().figureOnSquare = figureToPlace;
     }
     void PlacePawns()
     {
@@ -205,6 +222,7 @@ public class BoardGenerator : MonoBehaviour
     void Start()
     {
         instances = GetComponent<Instances>();
+        gameManager = GetComponent<GameManager>();
         letters = new char[8] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
         GenerateField();
         PlaceFigures();

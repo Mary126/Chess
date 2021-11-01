@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6557611213904589422}
   - component: {fileID: 53327614252509408}
   - component: {fileID: -1307814948650461145}
+  - component: {fileID: 6409070086808261517}
+  - component: {fileID: 3809842969268938445}
   m_Layer: 0
   m_Name: King-white
   m_TagString: Untagged
@@ -95,3 +97,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18357c302807360479b88a28a0043800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instances: {fileID: 0}
+  isPlaylable: 0
+  field: {fileID: 0}
+  fieldColumn: 0
+  fieldRow: 0
+  type: null
+  color: null
+  gameManager: {fileID: 0}
+--- !u!114 &6409070086808261517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907495799686589296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2087c65f485e21b4e8ae137708edfeaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &3809842969268938445
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907495799686589296}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.28, y: 1.28, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}

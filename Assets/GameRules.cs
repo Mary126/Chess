@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Instances : MonoBehaviour
+public class GameRules : MonoBehaviour
 {
-    [System.NonSerialized] public GameObject[,] field;
     // Start is called before the first frame update
     void Awake()
     {
-        field = new GameObject[8, 8];
+        
     }
+
+    
 }

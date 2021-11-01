@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class FieldInfo : MonoBehaviour
 {
-    public string positionX;
-    public int positionY;
-    public GameObject figure;
+    public int positionRow;
+    public int positionColumn;
+    public GameObject figureOnSquare = null;
+    public bool isactive = false;
+    public string color;
+    public GameManager gameManager;
 }
