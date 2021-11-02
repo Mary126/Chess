@@ -29,14 +29,16 @@ public class GameManager : MonoBehaviour
             field.GetComponent<FieldInfo>().isactive = true;
         }
     }
-    public void OpenFreeField(GameObject figure1, GameObject field)
+    public bool OpenFreeField(GameObject figure1, GameObject field)
     {
         GameObject figure2 = ReturnFigureOnSquare(field);
         if (figure2 == null)
         {
             field.GetComponent<SpriteRenderer>().color = new Color32(0, 128, 0, 0xFF);
             field.GetComponent<FieldInfo>().isactive = true;
+            return true;
         }
+        return false;
     }
     public void DisableControlledFigure()
     {
@@ -73,7 +75,16 @@ public class GameManager : MonoBehaviour
     }
     public void OpenAvailableFields(FigureInfo figureInfo)
     {
-        gameRules.PawnMovement(figureInfo);
+        switch(figureInfo.type)
+        {
+            case "pawn": gameRules.PawnMovement(figureInfo); break;
+            case "rook": gameRules.RookMovement(figureInfo); break;
+            case "knight": gameRules.KnightMovement(figureInfo); break;
+            case "bishop": gameRules.BishopMovement(figureInfo); break;
+            case "queen": gameRules.QueenMovement(figureInfo); break;
+            case "king": gameRules.KingMovement(figureInfo); break;
+            default: Debug.LogError("Unknown figure type"); break;
+        }
     }
     public void ChangeTurns()
     {
