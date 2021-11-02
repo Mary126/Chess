@@ -1544,6 +1544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instances: {fileID: 0}
   controlledFigure: {fileID: 0}
+  gameRules: {fileID: 0}
 --- !u!114 &635487435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1569,8 +1570,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turn: {fileID: 1952622869}
-  WinScreen: {fileID: 0}
-  color: {fileID: 0}
+  WinScreen: {fileID: 758333706}
+  color: {fileID: 1462188155}
 --- !u!1 &758333706
 GameObject:
   m_ObjectHideFlags: 0

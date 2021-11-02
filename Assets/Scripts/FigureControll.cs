@@ -25,6 +25,18 @@ public class FigureControll : MonoBehaviour
         transform.position = new Vector3(newTransform.position.x, newTransform.position.y, -1);
         figureInfo.fieldRow = fieldPositionRow;
         figureInfo.fieldColumn = fieldPositionColumn;
+        // if pawn reached the end, replace with queen
+        if (figureInfo.type == "pawn")
+        {
+            if (figureInfo.gameManager.instances.playablePosition == "top" && figureInfo.fieldRow == 7)
+            {
+                figureInfo.gameManager.gameRules.ReplacePawnWithQueen(figureInfo);
+            }
+            else if (figureInfo.gameManager.instances.playablePosition == "bottom" && figureInfo.fieldRow == 0)
+            {
+                figureInfo.gameManager.gameRules.ReplacePawnWithQueen(figureInfo);
+            }
+        }
     }
     void Awake()
     {

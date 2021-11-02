@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public Instances instances;
     public GameObject controlledFigure;
-    private GameRules gameRules;
+    public GameRules gameRules;
     private UserUI userUI;
     public GameObject ReturnFigureOnSquare(GameObject field)
     {
@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     }
     void EatFigure(GameObject figure)
     {
+        if (figure.GetComponent<FigureInfo>().type == "king")
+        {
+            Time.timeScale = 0;
+            userUI.ShowWinScreen();
+        }
         Destroy(figure);
     }
     public void OpenOccupiedField(GameObject figure1, GameObject field)

@@ -126,7 +126,7 @@ public class BoardGenerator : MonoBehaviour
             }
         }
     }
-    void PlaceFigure(GameObject figure, int positionX, int positionY, string type, string color)
+    public void PlaceFigure(GameObject figure, int positionX, int positionY, string type, string color)
     {
         GameObject figureToPlace = Instantiate(figure);
         figureToPlace.transform.position = new Vector3(instances.field[positionX, positionY].transform.position.x,
@@ -139,11 +139,11 @@ public class BoardGenerator : MonoBehaviour
         figureToPlace.GetComponent<FigureInfo>().fieldColumn = positionY;
         figureToPlace.GetComponent<FigureInfo>().instances = instances;
         figureToPlace.GetComponent<FigureInfo>().gameManager = gameManager;
-        if (color == "white")
+        if (color == "white" && instances.turn == "White")
         {
             figureToPlace.GetComponent<FigureInfo>().isPlaylable = true;
         }
-        else if (color == "black")
+        else if (color == "black" && instances.turn == "Black")
         {
             figureToPlace.GetComponent<FigureInfo>().isPlaylable = false;
         }

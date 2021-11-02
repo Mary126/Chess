@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameRules : MonoBehaviour
 {
     private GameManager gameManager;
+    private BoardGenerator boardGenerator;
     private int moveDirection = -1;
     private int PawnPosition = 6;
 
@@ -29,6 +30,21 @@ public class GameRules : MonoBehaviour
             }
             return false;
         }
+    }
+    public void ReplacePawnWithQueen(FigureInfo figureInfo)
+    {
+        int row = figureInfo.fieldRow;
+        int column = figureInfo.fieldColumn;
+        if (figureInfo.color == "black")
+        {
+            boardGenerator.PlaceFigure(boardGenerator.BlackQueen, row, column, "queen", "black");
+        }
+        else if (figureInfo.color == "white")
+        {
+            boardGenerator.PlaceFigure(boardGenerator.WhiteQueen, row, column, "queen", "white");
+        }
+        else Debug.LogError("Error - figure color does not exist");
+        Destroy(figureInfo.gameObject);
     }
     void MoveTop(FigureInfo figureInfo)
     {
@@ -276,6 +292,7 @@ public class GameRules : MonoBehaviour
     }
     void Awake()
     {
+        boardGenerator = GetComponent<BoardGenerator>();
         gameManager = GetComponent<GameManager>();
     }
 
