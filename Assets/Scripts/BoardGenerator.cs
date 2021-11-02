@@ -213,11 +213,11 @@ public class BoardGenerator : MonoBehaviour
     {
         if (WhiteFiguresCloserToPlayer)
         {
-            instances.playlablePosition = "bottom";
+            instances.playablePosition = "bottom";
         }
         else if (!WhiteFiguresCloserToPlayer)
         {
-            instances.playlablePosition = "top";
+            instances.playablePosition = "top";
         }
         PlacePawns();
         PlaceWhiteFigures();

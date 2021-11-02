@@ -10,7 +10,7 @@ public class GameRules : MonoBehaviour
 
     bool CheckMoveDirection(int row, int i)
     {
-        if (gameManager.instances.playlablePosition == "top")
+        if (gameManager.instances.playablePosition == "top")
         {
             moveDirection = -1;
             PawnPosition = 1;

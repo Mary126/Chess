@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public Instances instances;
     public GameObject controlledFigure;
     private GameRules gameRules;
+    private UserUI userUI;
     public GameObject ReturnFigureOnSquare(GameObject field)
     {
         if (field.GetComponent<FieldInfo>().figureOnSquare != null)
@@ -88,15 +89,24 @@ public class GameManager : MonoBehaviour
     }
     public void ChangeTurns()
     {
-        if (instances.playlablePosition == "top")
+        if (instances.turn == "White")
         {
-            instances.playlablePosition = "bottom";
+            instances.turn = "Black";
         }
-        else if (instances.playlablePosition == "bottom")
+        else if (instances.turn == "Black")
         {
-            instances.playlablePosition = "top";
+            instances.turn = "White";
         }
-        else Debug.LogError("Error - playablePosition name is wrong");
+        else Debug.LogError("Error - turn name is wrong");
+        if (instances.playablePosition == "bottom")
+        {
+            instances.playablePosition = "top";
+        }
+        else if (instances.playablePosition == "top")
+        {
+            instances.playablePosition = "bottom";
+        }
+        else Debug.LogError("Error - Playable position name is wrong");
         for (int row = 0; row < 8; row++)
         {
             for (int column = 0; column < 8; column++)
@@ -107,6 +117,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        userUI.ChangeTurns();
     }
     public void MoveControlledFigure(Transform newTransform, int fieldPositionRow, int fieldPositionColumn)
     {
@@ -130,5 +141,6 @@ public class GameManager : MonoBehaviour
     {
         instances = GetComponent<Instances>();
         gameRules = GetComponent<GameRules>();
+        userUI = GetComponent<UserUI>();
     }
 }
