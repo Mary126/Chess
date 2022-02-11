@@ -8,6 +8,7 @@ public class GameRules : MonoBehaviour
     private BoardGenerator boardGenerator;
     private int moveDirection = -1;
     private int PawnPosition = 6;
+    public bool kingDanger = false;
 
     bool CheckMoveDirection(int row, int i)
     {
@@ -252,6 +253,7 @@ public class GameRules : MonoBehaviour
         {
             gameManager.OpenFreeField(figureInfo.gameObject, figureInfo.instances.field[row - 1, column - 1]);
             gameManager.OpenOccupiedField(figureInfo.gameObject, figureInfo.instances.field[row - 1, column - 1]);
+            
         }
         if (row - 1 >= 0 && column + 1 <= 7)
         {
@@ -290,11 +292,182 @@ public class GameRules : MonoBehaviour
             gameManager.OpenOccupiedField(figureInfo.gameObject, figureInfo.instances.field[row, column - 1]);
         }
     }
+    public bool CheckIfKingIsInDanger(int kingPositionRow, int kingPositionColumn, FigureInfo king)
+    {
+        for (int row = 0; row < 8; row++)
+        {
+            for (int column = 0; column < 8; column++)
+            {
+                if (king.instances.field[row, column].GetComponent<FieldInfo>().figureOnSquare != null &&
+                    gameManager.ReturnFigureOnSquare(king.instances.field[row, column]).GetComponent<FigureInfo>().color != king.color)
+                {
+                    gameManager.OpenAvailableFields(gameManager.ReturnFigureOnSquare(king.instances.field[row, column]).GetComponent<FigureInfo>());
+                    if (king.instances.field[kingPositionRow, kingPositionColumn].GetComponent<FieldInfo>().isactive == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    // also check if a player can eat the figure that puts king in danger!!! and if king is still in danger after that
+    public bool CanKingMove(FigureInfo king)
+    {
+        if (king != null)
+        {
+            int numberOfAvailableFields = 0;
+            int numberOfDangerousFields = 0;
+            int row = king.fieldRow;
+            int column = king.fieldColumn;
+            //diagonal movement
+            if (row - 1 >= 0 && column - 1 >= 0)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row - 1, column - 1]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row - 1, column - 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (row - 1 >= 0 && column + 1 <= 7)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row - 1, column + 1]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row - 1, column + 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (row + 1 <= 7 && column - 1 >= 0)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row + 1, column - 1]) == true ||
+                     gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row + 1, column - 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (row + 1 <= 7 && column + 1 <= 7)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row + 1, column + 1]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row + 1, column + 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            //straight movement
+            if (row + 1 <= 7)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row + 1, column]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row + 1, column]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (row - 1 >= 0)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row - 1, column]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row - 1, column]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (column + 1 <= 7)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row, column + 1]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row, column + 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            if (column - 1 >= 0)
+            {
+                if (gameManager.OpenFreeField(king.gameObject, king.instances.field[row, column - 1]) == true ||
+                    gameManager.OpenOccupiedField(king.gameObject, king.instances.field[row, column - 1]))
+                {
+                    gameManager.DisableControlledFigure();
+                    int newPositionRow = row - 1;
+                    int newPositionColumn = column - 1;
+                    numberOfAvailableFields++;
+                    if (CheckIfKingIsInDanger(newPositionRow, newPositionColumn, king))
+                    {
+                        numberOfDangerousFields++;
+                    }
+                }
+            }
+            Debug.Log(numberOfAvailableFields);
+            Debug.Log(numberOfDangerousFields);
+            if (numberOfAvailableFields == numberOfDangerousFields)
+            {
+                return false;
+            }
+            else return true;
+        }
+        Debug.Log("No King Given");
+        return true;
+    }
+    public void CheckForCheckmate(FigureInfo king)
+    {
+        if (kingDanger == true)
+        {
+            kingDanger = false;
+            if (CanKingMove(king) == false)
+            {
+                gameManager.userUI.ShowWinScreen();
+            }
+        }
+    }
     void Awake()
     {
         boardGenerator = GetComponent<BoardGenerator>();
         gameManager = GetComponent<GameManager>();
     }
 
-    
 }

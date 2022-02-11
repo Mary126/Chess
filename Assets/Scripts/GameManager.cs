@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public Instances instances;
     public GameObject controlledFigure;
     public GameRules gameRules;
-    private UserUI userUI;
+    public UserUI userUI;
     public GameObject ReturnFigureOnSquare(GameObject field)
     {
         if (field.GetComponent<FieldInfo>().figureOnSquare != null)
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
         Destroy(figure);
     }
-    public void OpenOccupiedField(GameObject figure1, GameObject field)
+    public bool OpenOccupiedField(GameObject figure1, GameObject field)
     {
         GameObject figure2 = ReturnFigureOnSquare(field);
         if (figure2 != null && figure1.GetComponent<FigureInfo>().color != figure2.GetComponent<FigureInfo>().color)
@@ -33,7 +33,14 @@ public class GameManager : MonoBehaviour
             field.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 0xFF);
             figure2.GetComponent<BoxCollider>().enabled = false;
             field.GetComponent<FieldInfo>().isactive = true;
+            if (figure2.GetComponent<FigureInfo>().type == "king")
+            {
+                Debug.Log("king is in danger");
+                gameRules.kingDanger = true;
+            }
+            return true;
         }
+        return false;
     }
     public bool OpenFreeField(GameObject figure1, GameObject field)
     {
@@ -138,6 +145,12 @@ public class GameManager : MonoBehaviour
             instances.field[controlledFigure.GetComponent<FigureInfo>().fieldRow,
                 controlledFigure.GetComponent<FigureInfo>().fieldColumn].GetComponent<FieldInfo>().figureOnSquare = null;
             controlledFigure.GetComponent<FigureControll>().MoveFigure(newTransform, fieldPositionRow, fieldPositionColumn);
+            OpenAvailableFields(controlledFigure.GetComponent<FigureInfo>());
+            FigureInfo king = controlledFigure.GetComponent<FigureInfo>();
+            if (gameRules.kingDanger == true)
+            {
+                gameRules.CheckForCheckmate(king.GetComponent<FigureInfo>());
+            }
             DisableControlledFigure();
             ChangeTurns();
         }
