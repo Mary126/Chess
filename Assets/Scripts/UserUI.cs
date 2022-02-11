@@ -9,9 +9,18 @@ public class UserUI : MonoBehaviour
     public Text turn;
     public GameObject WinScreen;
     public Text color;
+    public GameObject checkText;
     public void ChangeTurns()
     {
         turn.text = instances.turn;
+    }
+    public void ShowCheckText()
+    {
+        checkText.SetActive(true);
+    }
+    public void HideCheckText()
+    {
+        checkText.SetActive(false);
     }
     public void ShowWinScreen()
     {

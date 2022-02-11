@@ -14,7 +14,7 @@ public class FieldControl : MonoBehaviour
         if (fieldInfo.isactive)
         {
             fieldInfo.gameManager.MoveControlledFigure(transform, fieldInfo.positionRow, fieldInfo.positionColumn);
-            fieldInfo.gameManager.DisableControlledFigure();
+            fieldInfo.gameManager.DisableActiveField();
         }
     }
     // Update is called once per frame

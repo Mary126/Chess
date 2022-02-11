@@ -14,7 +14,7 @@ public class FigureControll : MonoBehaviour
         if (figureInfo.isPlaylable)
         {
             Debug.Log("ClickFigure");
-            figureInfo.gameManager.DisableControlledFigure();
+            figureInfo.gameManager.DisableActiveField();
             figureInfo.gameManager.controlledFigure = gameObject;
             figureInfo.gameManager.OpenAvailableFields(figureInfo);
             figureInfo.isControlled = true;

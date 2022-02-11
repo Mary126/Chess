@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
             if (figure2.GetComponent<FigureInfo>().type == "king")
             {
                 Debug.Log("king is in danger");
-                gameRules.kingDanger = true;
+                gameRules.checkKing = field.GetComponent<FieldInfo>().figureOnSquare.GetComponent<FigureInfo>();
             }
             return true;
         }
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-    public void DisableControlledFigure()
+    public void DisableActiveField()
     {
         //Color all active fields their original color and disable privious controlled figure
         for (int row = 0; row < 8; row++)
@@ -135,23 +135,31 @@ public class GameManager : MonoBehaviour
     {
         if (controlledFigure != null)
         {
+            userUI.HideCheckText();
             GameObject figure = ReturnFigureOnSquare(instances.field[fieldPositionRow, fieldPositionColumn]);
+            FigureInfo controlledFigureInfo = controlledFigure.GetComponent<FigureInfo>();
             instances.field[fieldPositionRow, fieldPositionColumn].GetComponent<FieldInfo>().figureOnSquare = 
                 controlledFigure;
             if (figure != null)
             {
                 EatFigure(figure);
             }
-            instances.field[controlledFigure.GetComponent<FigureInfo>().fieldRow,
-                controlledFigure.GetComponent<FigureInfo>().fieldColumn].GetComponent<FieldInfo>().figureOnSquare = null;
+            instances.field[controlledFigureInfo.fieldRow, controlledFigureInfo.fieldColumn].GetComponent<FieldInfo>().figureOnSquare = null;
             controlledFigure.GetComponent<FigureControll>().MoveFigure(newTransform, fieldPositionRow, fieldPositionColumn);
-            OpenAvailableFields(controlledFigure.GetComponent<FigureInfo>());
-            FigureInfo king = controlledFigure.GetComponent<FigureInfo>();
-            if (gameRules.kingDanger == true)
+            DisableActiveField();
+            // if controlled figure is king and it moved to danger
+            if (controlledFigureInfo.type == "king" && gameRules.FigureIsInDanger(controlledFigureInfo.fieldRow, controlledFigureInfo.fieldColumn, controlledFigureInfo) == true)
             {
-                gameRules.CheckForCheckmate(king.GetComponent<FigureInfo>());
+                userUI.ShowCheckText();
             }
-            DisableControlledFigure();
+            //check if controlled figure can eat a king
+            OpenAvailableFields(controlledFigureInfo);
+            if (gameRules.checkKing != null)
+            {
+                userUI.ShowCheckText();
+                gameRules.CheckForCheckmate(gameRules.checkKing, controlledFigureInfo);
+            }
+            DisableActiveField();
             ChangeTurns();
         }
     }
